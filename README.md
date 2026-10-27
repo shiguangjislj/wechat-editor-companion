@@ -6,7 +6,7 @@
 
 ## 下载和安装
 
-1. 在本项目的[下载目录](downloads/)找到`wechat-editor-extension-v0.7.10.zip`，点击文件名，再点击页面右上角的**Download raw file**下载。
+1. 点击[下载v0.7.10扩展包](https://raw.githubusercontent.com/shiguangjislj/wechat-editor-companion/main/downloads/wechat-editor-extension-v0.7.10.zip)，保存ZIP文件。
 2. 解压ZIP。解压后应看到一个含`manifest.json`和`src`文件夹的扩展目录。
 3. 用Chrome打开`chrome://extensions/`，打开右上角的“开发者模式”。
 4. 点击“加载已解压的扩展程序”，选择第2步解压出的、**直接包含`manifest.json`**的文件夹。
