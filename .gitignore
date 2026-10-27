@@ -1,0 +1,4 @@
+node_modules/
+.DS_Store
+验证记录-v*.md
+*预览*.png

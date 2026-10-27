@@ -1,0 +1,31 @@
+<!doctype html><html><meta charset="utf-8"><body>
+<article contenteditable="true"><p>测试文章内容</p></article>
+<pre id="result">pending</pre>
+<script src="../src/editor-adapter.js"></script>
+<script>
+window.addEventListener('load', () => {
+  const editor = document.querySelector('article');
+  for (let index = 0; index < 21; index++) {
+    const p = document.createElement('p');
+    const image = document.createElement('img');
+    image.src = `https://example.com/preview-${index}.jpg`;
+    image.width = 100;
+    image.height = 60;
+    p.append(image);
+    editor.append(p);
+  }
+  let inputs = 0;
+  editor.addEventListener('input', () => {
+    if (++inputs !== 1) return;
+    editor.querySelectorAll('img')[1].src =
+      'https://mmbiz.qpic.cn/mmbiz_jpg/unselected-asset/640';
+  });
+  const result = window.WXHAdapter.applyImageStyle(editor, [editor.querySelector('img')],
+    {radius:12,shadow:'soft',border:'light',align:'center'});
+  document.querySelector('#result').textContent = JSON.stringify({
+    ok:result.ok,reason:result.reason||'',changed:result.changed,
+    visible:result.reconcile?.().visibleCount,images:editor.querySelectorAll('img').length,
+    frames:editor.querySelectorAll('[data-wxh-image-frame]').length,inputs
+  });
+});
+</script></body></html>

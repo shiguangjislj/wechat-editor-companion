@@ -1,0 +1,34 @@
+<!doctype html><html><meta charset="utf-8"><body>
+<article contenteditable="true"><p>测试文章内容</p></article>
+<pre id="result">pending</pre>
+<script src="../src/editor-adapter.js"></script>
+<script>
+window.addEventListener('load', () => {
+  const editor = document.querySelector('article');
+  const placeholder = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+  for (let index = 0; index < 21; index++) {
+    const p = document.createElement('p');
+    const image = document.createElement('img');
+    image.src = placeholder;
+    image.setAttribute('data-src', 'https://mmbiz.qpic.cn/mmbiz_jpg/media-'+index+'/0');
+    image.width = 100; image.height = 60;
+    p.append(image); editor.append(p);
+  }
+  let inputs = 0;
+  editor.addEventListener('input', () => {
+    inputs++;
+    if (inputs !== 1) return;
+    [...editor.querySelectorAll('img')].forEach((image, index) => {
+      if (index < 5) image.src = 'https://mmbiz.qpic.cn/mmbiz_jpg/media-'+index+'/640?wx_fmt=jpeg';
+    });
+  });
+  const adapter = window.WXHAdapter;
+  const result = adapter.applyImageStyle(editor, [...editor.querySelectorAll('img')],
+    {radius:12,shadow:'soft',border:'light',align:'center'});
+  document.querySelector('#result').textContent = JSON.stringify({
+    ok:result.ok,reason:result.reason||'',changed:result.changed,
+    visible:result.reconcile?.().visibleCount,images:editor.querySelectorAll('img').length,
+    frames:editor.querySelectorAll('[data-wxh-image-frame]').length,inputs
+  });
+});
+</script></body></html>

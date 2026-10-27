@@ -1,0 +1,31 @@
+<!doctype html><html><meta charset="utf-8"><body>
+<article contenteditable="true"><p><span style="color:green!important;font-size:28px!important">正文</span></p><p data-wxh-heading="1"><span data-wxh-heading-ink="1" style="background-color:#141917!important"><span style="background-color:#ff4c41!important">小标题</span></span></p><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" width="80" height="50"></p></article>
+<pre id="result">pending</pre>
+<script src="../src/editor-adapter.js"></script>
+<script>
+window.addEventListener('load', () => {
+  const adapter = window.WXHAdapter;
+  const editor = document.querySelector('article');
+  const nativeInputs = [];
+  editor.addEventListener('input', event => nativeInputs.push({ trusted: event.isTrusted, type: event.inputType || '' }));
+  const text = adapter.applyTypography(editor, adapter.collectBlocks(editor), {
+    bodySize:16,bodyColor:'#66b2b8',bodyBg:'#ffffff',align:'left',
+    headingSize:20,headingColor:'#ffffff',headingBg:'#ff4c41',headingAlign:'center'
+  });
+  const image = adapter.applyImageStyle(editor, [editor.querySelector('img')],
+    {radius:12,shadow:'soft',border:'light',align:'center'});
+  const first = editor.querySelector('p span');
+  const heading = editor.querySelector('[data-wxh-heading="1"]');
+  const headingInk = heading.querySelector('[data-wxh-heading-ink]');
+  document.querySelector('#result').textContent = JSON.stringify({
+    textOk:text.ok,textCount:text.reconcile?.().visibleCount,
+    textColor:getComputedStyle(first).color,textSize:getComputedStyle(first).fontSize,
+    imageOk:image.ok,imageCount:image.reconcile?.().visibleCount,
+    imageFrame:!!editor.querySelector('[data-wxh-image-frame]'),
+    textContent:editor.textContent.trim(),nativeInputs,
+    headingInkCount:heading.querySelectorAll('[data-wxh-heading-ink]').length,
+    headingBackground:getComputedStyle(headingInk).backgroundColor,
+    nestedHeadingBackgrounds:[...headingInk.querySelectorAll('*')].map(node=>getComputedStyle(node).backgroundColor)
+  });
+});
+</script></body></html>

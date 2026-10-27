@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "公众号排版与视频助手·验证版",
+  "version": "0.7.10",
+  "minimum_chrome_version": "148",
+  "message_serialization": "structured_clone",
+  "description": "公众号图文排版、图片处理及跨页面暂存的视频入库助手。",
+  "permissions": ["storage", "unlimitedStorage", "tabs"],
+  "host_permissions": ["https://mp.weixin.qq.com/*"],
+  "background": { "service_worker": "src/video-batch-background.js" },
+  "content_scripts": [
+    {
+      "matches": ["https://mp.weixin.qq.com/cgi-bin/appmsg*"],
+      "js": ["src/editor-adapter.js", "src/content.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://mp.weixin.qq.com/*"],
+      "js": ["src/video-batch-worker.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["src/panel.css"],
+      "matches": ["https://mp.weixin.qq.com/*"]
+    }
+  ]
+}

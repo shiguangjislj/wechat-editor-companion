@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>排版助手本地验证页</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f4f7f5;color:#25332b;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}.top{height:60px;background:#fff;border-bottom:1px solid #e2e8e3;display:flex;align-items:center;justify-content:space-between;padding:0 32px}.top b{font-size:15px}.top small{color:#84958b}.wrap{max-width:900px;margin:26px auto;padding:0 18px}.actions{display:flex;gap:10px;margin-bottom:14px;align-items:center}.actions button{border:1px solid #d6e4da;background:#fff;border-radius:8px;padding:8px 11px;cursor:pointer}.actions span{font-size:12px;color:#7f9584}.paper{background:#fff;border:1px solid #e3ebe4;border-radius:12px;min-height:900px;padding:30px 80px}.article-title{width:100%;font-size:27px;border:0;outline:0;font-weight:700;margin-bottom:20px}.editor{line-height:1.8;min-height:600px;outline:none}.editor h2{font-size:20px;margin-top:26px}.editor p{font-size:16px}.editor img{max-width:100%;display:block}.image{display:block;width:100%;height:220px;border-radius:0!important;box-shadow:none!important}.upload{padding:14px;background:#f0f8f1;border:1px solid #d6e8dc;border-radius:8px;margin-bottom:13px}.upload label{font-size:13px}.upload input{display:block;margin-top:9px}.upload-result{font-size:12px;color:#487456;margin-top:8px}
+  </style>
+</head>
+<body>
+  <script>window.__WXH_TEST__=true</script>
+  <header class="top"><b>公众号编辑器结构模拟页</b><small>本地验证，不连接微信公众号</small></header>
+  <main class="wrap">
+    <div class="actions"><button id="showUpload">打开视频本地上传</button><button id="goVideoPage">本地上传</button><button id="loadTestFile">向助手加入测试文件</button><button id="loadTestCover">向助手加入测试封面</button><span>请用右下角悬浮球体验插件</span></div>
+    <div class="upload" id="uploadBox" hidden><label>原生视频文件控件<input id="nativeVideo" type="file" accept="video/mp4,video/*"></label><div class="upload-result" id="uploadResult">尚未选择视频</div></div>
+    <div class="paper"><input class="article-title" placeholder="请输入标题" value="测试草稿：把日常留给更有意义的事"><article class="editor" contenteditable="true" id="editor">
+      <p>我们总以为创作需要复杂的准备，其实灵感常常藏在最普通的一天里。这里有一个<a href="https://example.com">需要保留的链接</a>。</p>
+      <h2>01　从一杯咖啡开始</h2>
+      <p>清晨的光落在桌面，<span style="font-size:14px;color:#555">这段文字原本有局部格式</span>，今天想和你分享几个小习惯。</p>
+      <p><img alt="模拟图片一" class="image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='220'%3E%3Crect width='600' height='220' fill='%23afd2ba'/%3E%3Ctext x='40' y='110' font-size='30' fill='%232a6548'%3EMORNING NOTES%3C/text%3E%3C/svg%3E"></p>
+      <h2>02　留一点时间观察</h2>
+      <p>不急着把每个想法变成答案，先让它们停留片刻。</p>
+      <p><img alt="模拟图片二" class="image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='220'%3E%3Crect width='600' height='220' fill='%23c7d6e8'/%3E%3Ctext x='40' y='110' font-size='30' fill='%234f7094'%3ESLOW MOMENTS%3C/text%3E%3C/svg%3E"></p>
+      <p>如果你也有喜欢的创作方式，欢迎把它分享出来。</p>
+    </article></div>
+  </main>
+  <script src="../src/editor-adapter.js"></script>
+  <script src="../src/content.js"></script>
+  <script>
+    document.querySelector('#showUpload').onclick=()=>{document.querySelector('#uploadBox').hidden=false};
+    document.querySelector('#goVideoPage').onclick=()=>{location.href='video-upload-fixture.html?t=media/videomsg_edit&action=video_edit'};
+    document.querySelector('#nativeVideo').onchange=e=>{document.querySelector('#uploadResult').textContent=e.target.files[0]?`已收到：${e.target.files[0].name}`:'尚未选择视频'};
+    document.querySelector('#loadTestFile').onclick=()=>{
+      const input=document.querySelector('[data-wxh-ui="root"]').shadowRoot.querySelector('#wxh-files');
+      if(!input){alert('请先打开助手的视频面板');return}
+      const file=new File([new Uint8Array(64)],'本地测试视频.mp4',{type:'video/mp4',lastModified:1700000000000});
+      const data=new DataTransfer();data.items.add(file);input.files=data.files;input.dispatchEvent(new Event('change',{bubbles:true}));
+    };
+    document.querySelector('#loadTestCover').onclick=()=>{
+      const input=[...document.querySelector('[data-wxh-ui="root"]').shadowRoot.querySelectorAll('[data-cover-id]')].at(-1);
+      if(!input){alert('请先打开助手的视频面板并加入测试文件');return}
+      const bytes=Uint8Array.from(atob('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/eAAAAABJRU5ErkJggg=='),c=>c.charCodeAt(0));
+      const file=new File([bytes],'本地测试封面.png',{type:'image/png'});
+      const data=new DataTransfer();data.items.add(file);input.files=data.files;input.dispatchEvent(new Event('change',{bubbles:true}));
+    };
+  </script>
+</body>
+</html>

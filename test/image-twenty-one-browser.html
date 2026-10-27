@@ -1,0 +1,29 @@
+<!doctype html><html><meta charset="utf-8"><body>
+<article contenteditable="true"><p>测试文章内容</p></article>
+<pre id="result">pending</pre>
+<script src="../src/editor-adapter.js"></script>
+<script>
+window.addEventListener('load', async () => {
+  const editor = document.querySelector('article');
+  for (let index = 0; index < 21; index++) {
+    const p = document.createElement('p');
+    const image = document.createElement('img');
+    image.src = `https://example.com/image-${index}.jpg`;
+    image.width = 100;
+    image.height = 60;
+    p.append(image);
+    editor.append(p);
+  }
+  const selected = [...editor.querySelectorAll('img')];
+  const result = await window.WXHAdapter.applyImageStyleBatch(editor, selected,
+    {radius:12,shadow:'soft',border:'light',align:'center'});
+  const appliedFrames = editor.querySelectorAll('[data-wxh-image-frame]').length;
+  const undo = result.ok ? await result.snapshot.restore() : null;
+  document.querySelector('#result').textContent = JSON.stringify({
+    ok:result.ok,reason:result.reason||'',changed:result.changed,appliedFrames,
+    undoOk:undo?.ok,undoReason:undo?.reason||'',undone:undo?.restored,
+    remainingFrames:editor.querySelectorAll('[data-wxh-image-frame]').length,
+    images:editor.querySelectorAll('img').length,text:editor.textContent.trim()
+  });
+});
+</script></body></html>

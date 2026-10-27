@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>独立视频上传页模拟</title>
+  <style>
+    body{margin:0;background:#f5f6f7;color:#333;font:16px -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+    header{padding:23px 6%;background:#fff;font-size:24px}main{max-width:940px;margin:32px auto;background:#fff;padding:60px 90px;min-height:680px}
+    h1{font-size:23px;font-weight:500;margin:0 0 50px}.row{display:flex;align-items:start;gap:30px;margin:32px 0}.row>label{width:85px;flex:none}
+    .row input[type=text]{height:35px;width:550px;border:1px solid #ddd;padding:0 12px}.row button{padding:8px 15px;border:1px solid #ddd;border-radius:4px;background:#f8f8f8;cursor:pointer}
+    .row small{display:block;margin-top:9px;color:#888}.footer{border-top:1px solid #eee;margin-top:70px;padding:24px;display:flex;justify-content:space-between}
+    .footer button{background:#07c160;color:#fff;border:0;border-radius:4px;padding:10px 45px;cursor:pointer}
+  </style>
+</head>
+<body>
+  <script>window.__WXH_TEST__=true;window.__WXH_VIDEO_TEST__=true</script>
+  <header>公众号</header>
+  <main>
+    <h1>添加视频</h1><button id="loadTestFile">向助手重新选择测试文件</button>
+    <div class="row"><label>上传视频</label><div><button id="nativeUploadButton">上传视频</button><input id="nativeVideo" type="file" accept="video/mp4,video/*" hidden><small id="uploadStatus">请上传时长小于1小时的视频</small></div></div>
+    <div class="row"><label>封面</label><div>视频上传完成后可设置封面图</div></div>
+    <div class="row"><label for="videoTitle">标题</label><div><input id="videoTitle" type="text" maxlength="64" placeholder="视频标题"><small>此标题为素材标题</small></div></div>
+    <div class="row"><label>原创声明</label><input type="checkbox" id="original"></div>
+    <div class="footer"><label><input type="checkbox" id="rules">我已阅读并同意《公众号平台视频上传服务规则》</label><button id="saveButton">保存</button></div>
+  </main>
+  <script src="../src/editor-adapter.js"></script>
+  <script src="../src/content.js"></script>
+  <script>
+    document.querySelector('#nativeUploadButton').onclick=()=>document.querySelector('#nativeVideo').click();
+    document.querySelector('#nativeVideo').onchange=e=>{document.querySelector('#uploadStatus').textContent=e.target.files[0]?`已收到：${e.target.files[0].name}`:'尚未选择视频'};
+    document.querySelector('#loadTestFile').onclick=()=>{
+      const input=document.querySelector('[data-wxh-ui="root"]').shadowRoot.querySelector('#wxh-files');
+      if(!input){alert('请先打开助手的视频面板');return}
+      const file=new File([new Uint8Array(64)],'本地测试视频.mp4',{type:'video/mp4',lastModified:1700000000000});
+      const data=new DataTransfer();data.items.add(file);input.files=data.files;input.dispatchEvent(new Event('change',{bubbles:true}));
+    };
+    document.querySelector('#saveButton').onclick=()=>alert('本地模拟：未连接微信素材库');
+  </script>
+</body>
+</html>

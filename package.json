@@ -1,0 +1,12 @@
+{
+  "name": "wechat-editor-extension",
+  "version": "0.7.10",
+  "private": true,
+  "scripts": {
+    "test": "node --test test/*.test.cjs"
+  },
+  "devDependencies": {
+    "fake-indexeddb": "^6.2.6",
+    "jsdom": "^27.0.0"
+  }
+}
