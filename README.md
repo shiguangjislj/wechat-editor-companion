@@ -14,6 +14,10 @@
 
 视频标题默认取原文件名并去掉扩展名；默认使用微信生成的第1张推荐封面。**是否声明原创由你在公众号原生页面选择**。首次出现视频上传服务协议时，也由你阅读并勾选。每条视频需在微信原生页面点击“保存”；扩展会尝试在“素材库→视频”列表核验结果。没有匹配到的项目会显示“待核对”，可检查素材库后再决定是否重新上传。视频入库后，由你在文章中选择插入位置。
 ## 演示与界面截图
+
+
+
+
 <img width="1196" height="688" alt="image" src="https://github.com/user-attachments/assets/110885d3-b930-48e8-9ec7-36084febd3e5" />
 <img width="1006" height="809" alt="image" src="https://github.com/user-attachments/assets/517727be-69ef-45c6-8036-112b2ae1d55e" />
 
