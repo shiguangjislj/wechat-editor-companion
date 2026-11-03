@@ -16,9 +16,8 @@
 ## 演示与界面截图
 
 Uploading 排版助手演示.mov…
-
+<img width="1006" height="809" alt="image" src="https://github.com/user-attachments/assets/f0d2824a-0846-43d8-a490-e17a3e312e12" />
 <img width="1196" height="688" alt="image" src="https://github.com/user-attachments/assets/110885d3-b930-48e8-9ec7-36084febd3e5" />
-<img width="1006" height="809" alt="image" src="https://github.com/user-attachments/assets/517727be-69ef-45c6-8036-112b2ae1d55e" />
 
 
 ## 下载和安装
